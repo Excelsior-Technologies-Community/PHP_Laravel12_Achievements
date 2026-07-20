@@ -4,17 +4,17 @@ namespace App\Achievements;
 
 use tehwave\Achievements\Achievement;
 
-class UsersFirstPost extends Achievement
+class UsersFirstComment extends Achievement
 {
-    public $name = 'First Post';
+    public $name = 'First Comment';
 
-    public $description = 'Create your first post';
+    public $description = 'Write your first comment';
 
-    public $icon = '🏆';
+    public $icon = '💬';
 
     public function unlockWhen($achiever)
     {
-        return $achiever->posts()->count() >= 1;
+        return $achiever->comments()->count() >= 1;
     }
 
     public function toDatabase()

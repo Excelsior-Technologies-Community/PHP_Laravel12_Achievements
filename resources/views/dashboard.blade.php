@@ -18,7 +18,7 @@
 
             <!-- Statistics -->
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                 <div class="bg-white rounded-2xl shadow-lg p-6">
 
@@ -38,6 +38,30 @@
 
                         <div class="text-5xl">
                             📝
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+
+                            <h3 class="text-gray-500 text-sm uppercase">
+                                Total Comments
+                            </h3>
+
+                            <p class="text-4xl font-bold text-purple-600 mt-2">
+                                {{ $commentsCount }}
+                            </p>
+
+                        </div>
+
+                        <div class="text-5xl">
+                            💬
                         </div>
 
                     </div>
@@ -119,9 +143,99 @@
                         </div>
                     </div>
 
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span>💬 First Comment</span>
+                            <span>{{ $commentsCount >= 1 ? 'Completed' : 'Pending' }}</span>
+                        </div>
+
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-green-500 h-3 rounded-full"
+                                style="width: {{ $commentsCount >= 1 ? '100%' : '0%' }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span>🗨️ Active Commenter (5 Comments)</span>
+                            <span>{{ min($commentsCount, 5) }}/5</span>
+                        </div>
+
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-purple-500 h-3 rounded-full"
+                                style="width: {{ min(($commentsCount / 5) * 100, 100) }}%">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span>🎤 Discussion Master (10 Comments)</span>
+                            <span>{{ min($commentsCount, 10) }}/10</span>
+                        </div>
+
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-pink-500 h-3 rounded-full"
+                                style="width: {{ min(($commentsCount / 10) * 100, 100) }}%">
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
+
+            <!-- Notifications -->
+
+            @if($notifications->count() > 0)
+            <div class="mt-8 bg-white rounded-2xl shadow-lg p-6">
+
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        🔔 Recent Notifications
+                    </h3>
+
+                    <form action="{{ route('notifications.read-all') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="text-sm text-indigo-600 hover:text-indigo-800 font-semibold">
+                            Mark all as read
+                        </button>
+                    </form>
+                </div>
+
+                <div class="space-y-3">
+
+                    @foreach($notifications as $notification)
+                    <div class="flex items-center gap-4 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-yellow-200">
+
+                        <div class="text-4xl">
+                            {{ $notification->data['icon'] ?? '🎉' }}
+                        </div>
+
+                        <div class="flex-1">
+
+                            <h4 class="font-semibold text-gray-800">
+                                {{ $notification->data['title'] ?? 'Achievement Unlocked' }}
+                            </h4>
+
+                            <p class="text-sm text-gray-600">
+                                {{ $notification->data['description'] ?? 'You have unlocked a new achievement!' }}
+                            </p>
+
+                        </div>
+
+                        <div class="text-xs text-gray-500">
+                            {{ $notification->created_at->diffForHumans() }}
+                        </div>
+
+                    </div>
+                    @endforeach
+
+                </div>
+
+            </div>
+            @endif
 
             <!-- Quick Actions -->
 
