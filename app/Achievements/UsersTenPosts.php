@@ -16,6 +16,10 @@ class UsersTenPosts extends Achievement
 
     public $icon = '🥇';
 
+    public function unlockWhen($achiever)
+    {
+        return $achiever->posts()->count() >= 10;
+    }
 
 
     public function toDatabase()

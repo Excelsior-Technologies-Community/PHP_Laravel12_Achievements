@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Achievements\UsersFirstPost;
 use App\Achievements\UsersFivePosts;
 use App\Achievements\UsersTenPosts;
+use App\Notifications\AchievementUnlocked;
 
 class PostController extends Controller
 {
@@ -45,14 +46,17 @@ class PostController extends Controller
 
         if ($count == 1) {
             auth()->user()->achieve(new UsersFirstPost());
+            auth()->user()->notify(new AchievementUnlocked((new UsersFirstPost())->toDatabase()));
         }
 
         if ($count == 5) {
             auth()->user()->achieve(new UsersFivePosts());
+            auth()->user()->notify(new AchievementUnlocked((new UsersFivePosts())->toDatabase()));
         }
 
         if ($count == 10) {
             auth()->user()->achieve(new UsersTenPosts());
+            auth()->user()->notify(new AchievementUnlocked((new UsersTenPosts())->toDatabase()));
         }
 
         return redirect()
